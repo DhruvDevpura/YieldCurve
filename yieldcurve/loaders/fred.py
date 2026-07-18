@@ -2,6 +2,16 @@ import requests
 import os
 import pandas as pd
 
+"""FRED CMT par-yield loader.
+It fetches the 11 constant maturity treasury series ( 1MO-30Y ) from FRED and parses them into one dates x tenor matrix
+
+Conventions and facts:
+-Values are par yields in PERCENT, semi-annual bond-equivalent basis.
+-Market-closed days appears as EMPTY fields in the CSV -> NaN
+-NaN covers both closed days and dates before a series existed
+-Columns are tenors as year fractions ( 1/12 , 1/6 , 1/2 ,...)
+-Failed Download / Missing file gives error"""
+
 DGS_SERIES = {"DGS1MO":1/12,"DGS3MO":1/4,"DGS6MO":1/2,"DGS1":1,"DGS2":2,"DGS3":3,"DGS5":5,"DGS7":7,"DGS10":10,"DGS20":20,"DGS30":30}
 FRED_CSV_URL = "https://fred.stlouisfed.org/graph/fredgraph.csv?id={series_id}"
 
